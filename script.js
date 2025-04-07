@@ -48,13 +48,19 @@ function populateDisplay() {
   let firstNum = [];
   let secondNum = [];
   let operator = "";
+  let shouldClear = false;
 
   btnNumbers.forEach((button) => {
     button.addEventListener("click", () => {
       let pressedBtn = "";
       btnContent = button.textContent;
       pressedBtn = btnContent;
-      //   console.log(`pressed button value ${pressedBtn}`);
+
+      // clear screen
+      if (shouldClear) {
+        screen.textContent = "";
+        shouldClear = false;
+      }
 
       if (operator === "") {
         if (btnContent === "." && firstNum.includes(".")) {
@@ -64,13 +70,7 @@ function populateDisplay() {
       } else if (btnContent === "." && secondNum.includes(".")) {
         return;
       } else secondNum.push(pressedBtn);
-
-      //   if (btnContent != ".") pressedBtn = Number(btnContent);
       screen.textContent += pressedBtn;
-
-      console.log(`num1 ${firstNum}`);
-
-      console.log(`num2 ${secondNum}`);
 
       return pressedBtn;
     });
@@ -98,10 +98,20 @@ function populateDisplay() {
     console.log(result);
 
     screen.textContent = result;
+    shouldClear = true;
     firstNum = [];
     secondNum = [];
     operator = "";
   });
+
+  btnClear.addEventListener("click", () => {
+    firstNum = [];
+    secondNum = [];
+    operator = "";
+    screen.textContent = "";
+  });
 }
 
 populateDisplay();
+
+// TODO  use result of the first calculation in the next one
