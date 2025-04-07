@@ -1,5 +1,3 @@
-console.log(`test`);
-
 // add
 
 const add = function (a, b) {
@@ -21,12 +19,10 @@ const multiply = function (a, b) {
 // divide
 
 const divide = function (a, b) {
-  return a / b;
+  if (b == 0) {
+    return "NOPE";
+  } else return a / b;
 };
-
-const num1 = null;
-const num2 = null;
-const operator = null;
 
 const operate = function (operator, num1, num2) {
   switch (operator) {
@@ -45,36 +41,55 @@ const operate = function (operator, num1, num2) {
 
 function populateDisplay() {
   let screen = document.querySelector("#screen");
-  let btnAll = document.querySelectorAll("#calc-buttons");
   let btnNumbers = document.querySelectorAll(".button-numbers > button");
   let btnOperators = document.querySelectorAll(".button-operators > button");
   let btnResult = document.querySelector("#button-equals");
+  let btnClear = document.querySelector("#button-clear");
   let firstNum = [];
   let secondNum = [];
   let operator = "";
 
-  let btnNumbersValue = btnNumbers.forEach((button) => {
+  btnNumbers.forEach((button) => {
     button.addEventListener("click", () => {
-      let pressedBtn = Number(button.textContent);
-      screen.textContent = pressedBtn;
+      let pressedBtn = "";
+      btnContent = button.textContent;
+      pressedBtn = btnContent;
+      //   console.log(`pressed button value ${pressedBtn}`);
 
-      if (operator == "") firstNum.push(pressedBtn);
-      else secondNum.push(pressedBtn);
+      if (operator === "") {
+        if (btnContent === "." && firstNum.includes(".")) {
+          return;
+        }
+        firstNum.push(pressedBtn);
+      } else if (btnContent === "." && secondNum.includes(".")) {
+        return;
+      } else secondNum.push(pressedBtn);
+
+      //   if (btnContent != ".") pressedBtn = Number(btnContent);
+      screen.textContent += pressedBtn;
+
+      console.log(`num1 ${firstNum}`);
+
+      console.log(`num2 ${secondNum}`);
+
       return pressedBtn;
     });
   });
 
-  let btnOperatorsValue = btnOperators.forEach((button) => {
+  btnOperators.forEach((button) => {
     button.addEventListener("click", () => {
       let pressedBtn = button.textContent;
-      screen.textContent = pressedBtn;
       operator = pressedBtn;
+      screen.textContent += operator;
     });
   });
 
-  let getResult = btnResult.addEventListener("click", () => {
-    let num1 = firstNum[firstNum.length - 1];
-    let num2 = secondNum[secondNum.length - 1];
+  btnResult.addEventListener("click", () => {
+    console.log("screen content" + screen.textContent);
+
+    let num1 = parseFloat(firstNum.join(""));
+    let num2 = parseFloat(secondNum.join(""));
+
     console.log(num1);
     console.log(operator);
     console.log(num2);
