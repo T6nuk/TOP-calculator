@@ -103,7 +103,10 @@ function populateDisplay() {
     let num2 = parseFloat(calcState.secondNum.join(""));
     let result = operate(calcState.operator, num1, num2);
 
-    calcState.answer = result;
+    if (result % 1 !== 0) {
+      calcState.answer = result.toFixed(2);
+    } else calcState.answer = result;
+
     updateScreen(calcState.answer);
 
     calcState.shouldClear = true;
