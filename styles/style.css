@@ -1,16 +1,27 @@
 html,
 body {
-  margin: 0 10;
+  margin: 0;
+  padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
 }
 
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+button {
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
 #container {
   background-color: darkslategray;
-  max-height: 300px;
-  max-width: 300px;
+  max-height: 400px;
+  max-width: 90vw;
+  width: 300px;
   display: flex;
   justify-content: center;
   border: 0.5rem outset black;
@@ -38,7 +49,7 @@ body {
 .button-numbers button,
 .button-operators button {
   width: 90px;
-  height: 30px;
+  height: 40px;
   font-size: 20px;
   text-align: center;
 }
