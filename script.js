@@ -45,10 +45,18 @@ function populateDisplay() {
   let btnOperators = document.querySelectorAll(".button-operators > button");
   let btnResult = document.querySelector("#button-equals");
   let btnClear = document.querySelector("#button-clear");
-  let firstNum = [];
-  let secondNum = [];
-  let operator = "";
-  let shouldClear = false;
+
+  let calcState = {
+    firstNum: [],
+    secondNum: [],
+    operator: "",
+    answer: "",
+    shouldClear: false,
+  };
+
+  function updateScreen(content) {
+    screen.textContent = content;
+  }
 
   btnNumbers.forEach((button) => {
     button.addEventListener("click", () => {
@@ -57,19 +65,19 @@ function populateDisplay() {
       pressedBtn = btnContent;
 
       // clear screen
-      if (shouldClear) {
-        screen.textContent = "";
-        shouldClear = false;
+      if (calcState.shouldClear) {
+        updateScreen("");
+        calcState.shouldClear = false;
       }
 
-      if (operator === "") {
-        if (btnContent === "." && firstNum.includes(".")) {
+      if (calcState.operator === "") {
+        if (btnContent === "." && calcState.firstNum.includes(".")) {
           return;
         }
-        firstNum.push(pressedBtn);
-      } else if (btnContent === "." && secondNum.includes(".")) {
+        calcState.firstNum.push(pressedBtn);
+      } else if (btnContent === "." && calcState.secondNum.includes(".")) {
         return;
-      } else secondNum.push(pressedBtn);
+      } else calcState.secondNum.push(pressedBtn);
       screen.textContent += pressedBtn;
 
       return pressedBtn;
@@ -78,40 +86,56 @@ function populateDisplay() {
 
   btnOperators.forEach((button) => {
     button.addEventListener("click", () => {
+      console.log(calcState.firstNum);
+      if (calcState.operator !== "") return;
+      if (calcState.answer != "") {
+        calcState.firstNum = [String(calcState.answer)];
+      }
+      calcState.answer = "";
+      console.log(calcState.firstNum);
+      console.log(calcState.answer);
+
       let pressedBtn = button.textContent;
-      operator = pressedBtn;
-      screen.textContent += operator;
+      calcState.operator = pressedBtn;
+      screen.textContent += calcState.operator;
     });
   });
 
   btnResult.addEventListener("click", () => {
     console.log("screen content" + screen.textContent);
 
-    let num1 = parseFloat(firstNum.join(""));
-    let num2 = parseFloat(secondNum.join(""));
+    let num1 = parseFloat(calcState.firstNum.join(""));
+    let num2 = parseFloat(calcState.secondNum.join(""));
 
     console.log(num1);
-    console.log(operator);
+    console.log(calcState.operator);
     console.log(num2);
 
-    let result = operate(operator, num1, num2);
-    console.log(result);
+    let result = operate(calcState.operator, num1, num2);
 
-    screen.textContent = result;
-    shouldClear = true;
-    firstNum = [];
-    secondNum = [];
-    operator = "";
+    calcState.answer = result;
+    console.log(calcState.answer);
+    console.log("type of " + typeof calcState.answer);
+
+    updateScreen(calcState.answer);
+
+    // screen.textContent = result;
+    calcState.shouldClear = true;
+    calcState.firstNum = [];
+    calcState.secondNum = [];
+    calcState.operator = "";
   });
 
   btnClear.addEventListener("click", () => {
-    firstNum = [];
-    secondNum = [];
-    operator = "";
-    screen.textContent = "";
+    calcState.firstNum = [];
+    calcState.secondNum = [];
+    calcState.operator = "";
+    updateScreen("");
+    calcState.answer = "";
   });
 }
 
 populateDisplay();
 
 // TODO  use result of the first calculation in the next one
+// figure out how to keep the result without deleting it on button press
